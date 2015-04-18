@@ -1,19 +1,19 @@
-mypsql:
+postgresql:
   build: postgresql
   volumes:
     - '/srv/downloads/postgresql/ubuntu/14.04:/mnt'
 
-myruby:
+ruby:
   build: ruby
   volumes:
     - '/srv/downloads/ruby/ubuntu/14.04:/ruby'
 
-mynginx:
+nginx:
   build: nginx
   volumes:
     - '/srv/downloads/nginx/ubuntu/14.04:/nginx'
 
-mymonit:
+monit:
   build: monit
   volumes:
     - '/srv/downloads/monit/ubuntu/14.04:/monit'
