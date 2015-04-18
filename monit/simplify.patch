@@ -1,0 +1,204 @@
+diff -cr monit-5.12.2-orig/src/http/cervlet.c monit-5.12.2-mod/src/http/cervlet.c
+*** monit-5.12.2-orig/src/http/cervlet.c	2015-03-20 21:20:00.000000000 +0800
+--- monit-5.12.2-mod/src/http/cervlet.c	2015-04-18 12:47:00.000000000 +0800
+***************
+*** 306,311 ****
+--- 306,312 ----
+  
+  
+  static void do_head(HttpResponse res, const char *path, const char *name, int refresh) {
++         char *uptime = Util_getUptime(getProcessUptime(getpid(), ptree, ptreesize), "&nbsp;");
+          StringBuffer_append(res->outputbuffer,
+                              "<!DOCTYPE html>"\
+                              "<html>"\
+***************
+*** 313,320 ****
+                              "<title>Monit: %s</title> "\
+                              "<style type=\"text/css\"> "\
+                              " html, body {height: 100%%;margin: 0;} "\
+!                             " body {background-color: white;font: normal normal normal 16px/20px 'HelveticaNeue', Helvetica, Arial, sans-serif; color:#222;} "\
+!                             " h1 {padding:30px 0 10px 0; text-align:center;color:#222;font-size:28px;} "\
+                              " h2 {padding:20px 0 10px 0; text-align:center;color:#555;font-size:22px;} "\
+                              " a:hover {text-decoration: none;} "\
+                              " a {text-decoration: underline;color:#222} "\
+--- 314,321 ----
+                              "<title>Monit: %s</title> "\
+                              "<style type=\"text/css\"> "\
+                              " html, body {height: 100%%;margin: 0;} "\
+!                             " body {background-color: white;font: 14px/20px 'HelveticaNeue', Helvetica, Arial, sans-serif; color:#222;} "\
+!                             " h1 {padding:0; text-align:center;color:#222;font-size:28px;} "\
+                              " h2 {padding:20px 0 10px 0; text-align:center;color:#555;font-size:22px;} "\
+                              " a:hover {text-decoration: none;} "\
+                              " a {text-decoration: underline;color:#222} "\
+***************
+*** 330,340 ****
+                              " #wrap {min-height: 100%%;} "\
+                              " #main {overflow:auto; padding-bottom:50px;} "\
+                              " /*Opera Fix*/body:before {content:\"\";height:100%%;float:left;width:0;margin-top:-32767px;/} "\
+-                             " #footer {position: relative;margin-top: -50px; height: 50px; clear:both; font-size:11px;color:#777;text-align:center;} "\
+-                             " #footer a {color:#333;} #footer a:hover {text-decoration: none;} "\
+                              " #nav {background:#ddd;font:normal normal normal 14px/0px 'HelveticaNeue', Helvetica;} "\
+                              " #nav td {padding:5px 10px;} "\
+!                             " #header {margin-bottom:30px;background:#EFF7FF} "\
+                              " #nav, #header {border-bottom:1px solid #ccc;} "\
+                              " #header-row {width:95%%;} "\
+                              " #header-row th {padding:30px 10px 10px 10px;font-size:120%%;} "\
+--- 331,339 ----
+                              " #wrap {min-height: 100%%;} "\
+                              " #main {overflow:auto; padding-bottom:50px;} "\
+                              " /*Opera Fix*/body:before {content:\"\";height:100%%;float:left;width:0;margin-top:-32767px;/} "\
+                              " #nav {background:#ddd;font:normal normal normal 14px/0px 'HelveticaNeue', Helvetica;} "\
+                              " #nav td {padding:5px 10px;} "\
+!                             " #header {background:#EFF7FF} "\
+                              " #nav, #header {border-bottom:1px solid #ccc;} "\
+                              " #header-row {width:95%%;} "\
+                              " #header-row th {padding:30px 10px 10px 10px;font-size:120%%;} "\
+***************
+*** 343,351 ****
+                              " #status-table {width:95%%;} "\
+                              " #status-table th {text-align:left;background:#edf5ff;font-weight:normal;} "\
+                              " #status-table th, #status-table td, #status-table tr {border:1px solid #ccc;padding:5px;} "\
+-                             " #buttons {font-size:20px; margin:40px 0 20px 0;} "\
+-                             " #buttons td {padding-right:50px;} "\
+-                             " #buttons input {font-size:18px;padding:5px;} "\
+                              "</style>"\
+                              "<meta HTTP-EQUIV='REFRESH' CONTENT=%d> "\
+                              "<meta HTTP-EQUIV='Expires' Content=0> "\
+--- 342,347 ----
+***************
+*** 355,397 ****
+                              "<table id='nav' width='100%%'>"\
+                              "  <tr>"\
+                              "    <td width='20%%'><a href='.'>Home</a>&nbsp;&gt;&nbsp;<a href='%s'>%s</a></td>"\
+!                             "    <td width='60%%' style='text-align:center;'>Use <a href='http://mmonit.com/'>M/Monit</a> to manage all your Monit instances</td>"\
+                              "    <td width='20%%'><p align='right'><a href='_about'>Monit %s</a></td>"\
+                              "  </tr>"\
+                              "</table>"\
+                              "<center>",
+!                             Run.system->name, refresh, path, name, VERSION);
+  }
+  
+  
+  static void do_foot(HttpResponse res) {
+          StringBuffer_append(res->outputbuffer,
+                              "</center></div></div>"
+!                             "<div id='footer'>"
+!                             "Copyright &copy; 2001-2015 <a href=\"http://tildeslash.com/\">Tildeslash</a>. All rights reserved. "
+!                             "<span style='margin-left:5px;'></span>"
+!                             "<a href=\"http://mmonit.com/monit/\">Monit web site</a> | "
+!                             "<a href=\"http://mmonit.com/wiki/\">Monit Wiki</a> | "
+!                             "<a href=\"http://mmonit.com/\">M/Monit</a>"
+!                             "</div></body></html>");
+  }
+  
+  
+  static void do_home(HttpRequest req, HttpResponse res) {
+-         char *uptime = Util_getUptime(getProcessUptime(getpid(), ptree, ptreesize), "&nbsp;");
+- 
+          do_head(res, "", "", Run.polltime);
+-         StringBuffer_append(res->outputbuffer,
+-                             "<table id='header' width='100%%'>"
+-                             " <tr>"
+-                             "  <td colspan=2 valign='top' align='left' width='100%%'>"
+-                             "  <h1>Monit Service Manager</h1>"
+-                             "  <p align='center'>Monit is <a href='_runtime'>running</a> on %s with <i>uptime, %s</i> and monitoring:</p><br>"
+-                             "  </td>"
+-                             " </tr>"
+-                             "</table>", Run.system->name, uptime);
+- 
+-         FREE(uptime);
+  
+          do_home_system(req, res);
+          do_home_process(req, res);
+--- 351,375 ----
+                              "<table id='nav' width='100%%'>"\
+                              "  <tr>"\
+                              "    <td width='20%%'><a href='.'>Home</a>&nbsp;&gt;&nbsp;<a href='%s'>%s</a></td>"\
+!                             "    <td width='60%%' style='text-align:center;'>Monit is <a href='_runtime'>running</a> on <b>%s</b> with <i>uptime, %s</i> and monitoring.</td>"\
+                              "    <td width='20%%'><p align='right'><a href='_about'>Monit %s</a></td>"\
+                              "  </tr>"\
+                              "</table>"\
+                              "<center>",
+!                             Run.system->name, refresh, path, name, Run.system->name, uptime, VERSION);
+!         FREE(uptime);
+  }
+  
+  
+  static void do_foot(HttpResponse res) {
+          StringBuffer_append(res->outputbuffer,
+                              "</center></div></div>"
+!                             "</body></html>");
+  }
+  
+  
+  static void do_home(HttpRequest req, HttpResponse res) {
+          do_head(res, "", "", Run.polltime);
+  
+          do_home_system(req, res);
+          do_home_process(req, res);
+***************
+*** 564,586 ****
+                              Run.httpd.credentials && Engine_hasHostsAllow() ? "Basic Authentication and Host/Net allow list" : Run.httpd.credentials ? "Basic Authentication" : Engine_hasHostsAllow() ? "Host/Net allow list" : "No authentication");
+          print_alerts(res, Run.maillist);
+          StringBuffer_append(res->outputbuffer, "</table>");
+-         if (! is_readonly(req)) {
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<table id='buttons'><tr>");
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<td style='color:red;'><form method=POST action='_runtime'>Stop Monit http server? "
+-                                     "<input type=hidden name='action' value='stop'><input type=submit value='Go'></form></td>");
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<td><form method=POST action='_runtime'>Force validate now? <input type=hidden name='action' value='validate'>"
+-                                     "<input type=submit value='Go'></form></td>");
+- 
+-                 if (Run.dolog && ! Run.use_syslog) {
+-                         StringBuffer_append(res->outputbuffer,
+-                                             "<td><form method=GET action='_viewlog'>View Monit logfile? <input type=submit value='Go'></form></td>");
+-                 }
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "</tr></table>");
+-         }
+          do_foot(res);
+  }
+  
+--- 542,547 ----
+***************
+*** 1527,1563 ****
+  
+  
+  static void print_buttons(HttpRequest req, HttpResponse res, Service_T s) {
+-         if (is_readonly(req)) {
+-                  // A read-only REMOTE_USER does not get access to these buttons
+-                 return;
+-         }
+-         StringBuffer_append(res->outputbuffer, "<table id='buttons'><tr>");
+-         /* Start program */
+-         if (s->start)
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<td><form method=POST action=%s>"
+-                                     "<input type=hidden value='start' name=action>"
+-                                     "<input type=submit value='Start service'></form></td>", s->name);
+-         /* Stop program */
+-         if (s->stop)
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<td><form method=POST action=%s>"
+-                                     "<input type=hidden value='stop' name=action>"
+-                                     "<input type=submit value='Stop service'></form></td>", s->name);
+-         /* Restart program */
+-         if ((s->start && s->stop) || s->restart)
+-                 StringBuffer_append(res->outputbuffer,
+-                                     "<td><form method=POST action=%s>"
+-                                     "<input type=hidden value='restart' name=action>"
+-                                     "<input type=submit value='Restart service'></form></td>", s->name);
+-         /* (un)monitor */
+-         StringBuffer_append(res->outputbuffer,
+-                             "<td><form method=POST action=%s>"
+-                             "<input type=hidden value='%s' name=action>"
+-                             "<input type=submit value='%s'></form></td></tr></table>",
+-                             s->name,
+-                             s->monitor ? "unmonitor" : "monitor",
+-                             s->monitor ? "Disable monitoring" : "Enable monitoring");
+  }
+  
+  
+--- 1488,1493 ----
