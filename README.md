@@ -13,8 +13,7 @@ You can change them if there are slow in your location.
 Run these commands and the deb files will be put in `/srv/downloads`:
 
 ```
-docker-compose build
-docker-compose up
+docker-compose build && docker-compose up && docker-compose rm
 ```
 
 LICENSE: MIT
