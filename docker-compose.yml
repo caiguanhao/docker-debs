@@ -1,0 +1,9 @@
+mypsql:
+  build: postgresql
+  volumes:
+    - '/srv/downloads/postgresql/ubuntu/14.04:/mnt'
+
+myruby:
+  build: ruby
+  volumes:
+    - '/srv/downloads/ruby/ubuntu/14.04:/ruby'
