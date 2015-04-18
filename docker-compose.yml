@@ -7,3 +7,8 @@ myruby:
   build: ruby
   volumes:
     - '/srv/downloads/ruby/ubuntu/14.04:/ruby'
+
+mynginx:
+  build: nginx
+  volumes:
+    - '/srv/downloads/nginx/ubuntu/14.04:/nginx'
