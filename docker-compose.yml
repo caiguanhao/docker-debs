@@ -17,3 +17,8 @@ monit:
   build: monit
   volumes:
     - '/srv/downloads/monit/ubuntu/14.04:/monit'
+
+docker:
+  build: docker
+  volumes:
+    - '/srv/downloads/docker/ubuntu/14.04:/docker'
