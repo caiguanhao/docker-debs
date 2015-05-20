@@ -32,3 +32,8 @@ wkhtmltox:
   build: wkhtmltox
   volumes:
     - '/srv/downloads/wkhtmltox/ubuntu/14.04:/wkhtmltox'
+
+varnish:
+  build: varnish
+  volumes:
+    - '/srv/downloads/varnish/ubuntu/14.04:/varnish'
