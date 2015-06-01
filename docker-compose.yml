@@ -42,3 +42,8 @@ varnish:
   build: varnish
   volumes:
     - '/srv/downloads/varnish/ubuntu/14.04:/varnish'
+
+openjdk:
+  build: openjdk
+  volumes:
+    - '/srv/downloads/openjdk/ubuntu/14.04:/openjdk'
