@@ -8,6 +8,11 @@ postgresql:
   volumes:
     - '/srv/downloads/postgresql/ubuntu/14.04:/mnt'
 
+redis:
+  build: redis
+  volumes:
+    - '/srv/downloads/redis/ubuntu/14.04:/mnt'
+
 ruby:
   build: ruby
   volumes:
