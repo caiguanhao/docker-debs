@@ -1,8 +1,8 @@
-diff -cr nginx-1.7.12/debian/rules nginx-1.7.12-new/debian/rules
-*** nginx-1.7.12/debian/rules	2015-03-25 00:44:40.000000000 +0800
---- nginx-1.7.12-new/debian/rules	2015-04-03 12:26:37.000000000 +0800
+diff -cr nginx-1.9.2/debian/rules nginx-1.9.2-new/debian/rules
+*** nginx-1.9.2/debian/rules	2015-06-16 23:48:42.000000000 +0800
+--- nginx-1.9.2-new/debian/rules	2015-06-18 15:57:50.000000000 +0800
 ***************
-*** 33,53 ****
+*** 33,56 ****
   		--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
   		--user=nginx \
   		--group=nginx \
@@ -19,12 +19,15 @@ diff -cr nginx-1.7.12/debian/rules nginx-1.7.12-new/debian/rules
 - 		--with-http_secure_link_module \
   		--with-http_stub_status_module \
 - 		--with-http_auth_request_module \
+  		--with-threads \
+  		--with-stream \
+  		--with-stream_ssl_module \
 - 		--with-mail \
 - 		--with-mail_ssl_module \
   		--with-file-aio \
   		$(WITH_SPDY) \
   		--with-cc-opt="$(CFLAGS)" \
---- 33,44 ----
+--- 33,47 ----
   		--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
   		--user=nginx \
   		--group=nginx \
@@ -34,14 +37,19 @@ diff -cr nginx-1.7.12/debian/rules nginx-1.7.12-new/debian/rules
   		--with-http_gunzip_module \
   		--with-http_gzip_static_module \
   		--with-http_stub_status_module \
+  		--with-threads \
+  		--with-stream \
+  		--with-stream_ssl_module \
   		--with-file-aio \
   		$(WITH_SPDY) \
   		--with-cc-opt="$(CFLAGS)" \
-diff -cr nginx-1.7.12/src/core/nginx.c nginx-1.7.12-new/src/core/nginx.c
-*** nginx-1.7.12/src/core/nginx.c	2015-04-03 11:55:47.000000000 +0800
---- nginx-1.7.12-new/src/core/nginx.c	2015-04-03 12:03:59.000000000 +0800
+Only in nginx-1.9.2-new/debian: rules.orig
+Only in nginx-1.9.2-new/debian: rules.rej
+diff -cr nginx-1.9.2/src/core/nginx.c nginx-1.9.2-new/src/core/nginx.c
+*** nginx-1.9.2/src/core/nginx.c	2015-06-16 22:49:42.000000000 +0800
+--- nginx-1.9.2-new/src/core/nginx.c	2015-06-18 15:51:23.000000000 +0800
 ***************
-*** 217,223 ****
+*** 194,200 ****
       }
   
       if (ngx_show_version) {
@@ -49,7 +57,7 @@ diff -cr nginx-1.7.12/src/core/nginx.c nginx-1.7.12-new/src/core/nginx.c
   
           if (ngx_show_help) {
               ngx_write_stderr(
---- 217,223 ----
+--- 194,200 ----
       }
   
       if (ngx_show_version) {
@@ -57,29 +65,31 @@ diff -cr nginx-1.7.12/src/core/nginx.c nginx-1.7.12-new/src/core/nginx.c
   
           if (ngx_show_help) {
               ngx_write_stderr(
-diff -cr nginx-1.7.12/src/core/nginx.h nginx-1.7.12-new/src/core/nginx.h
-*** nginx-1.7.12/src/core/nginx.h	2015-04-03 11:53:43.000000000 +0800
---- nginx-1.7.12-new/src/core/nginx.h	2015-04-03 12:03:59.000000000 +0800
+Only in nginx-1.9.2-new/src/core: nginx.c.orig
+diff -cr nginx-1.9.2/src/core/nginx.h nginx-1.9.2-new/src/core/nginx.h
+*** nginx-1.9.2/src/core/nginx.h	2015-06-16 22:49:42.000000000 +0800
+--- nginx-1.9.2-new/src/core/nginx.h	2015-06-18 15:51:23.000000000 +0800
 ***************
 *** 11,17 ****
   
-  #define nginx_version      1007011
-  #define NGINX_VERSION      "1.7.12"
+  #define nginx_version      1009002
+  #define NGINX_VERSION      "1.9.2"
 ! #define NGINX_VER          "nginx/" NGINX_VERSION
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 --- 11,17 ----
   
-  #define nginx_version      1007011
-  #define NGINX_VERSION      "1.7.12"
+  #define nginx_version      1009002
+  #define NGINX_VERSION      "1.9.2"
 ! #define NGINX_VER          "GaiaMagic"
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
-diff -cr nginx-1.7.12/src/http/ngx_http_header_filter_module.c nginx-1.7.12-new/src/http/ngx_http_header_filter_module.c
-*** nginx-1.7.12/src/http/ngx_http_header_filter_module.c	2015-04-03 11:57:41.000000000 +0800
---- nginx-1.7.12-new/src/http/ngx_http_header_filter_module.c	2015-04-03 12:03:59.000000000 +0800
+Only in nginx-1.9.2-new/src/core: nginx.h.orig
+diff -cr nginx-1.9.2/src/http/ngx_http_header_filter_module.c nginx-1.9.2-new/src/http/ngx_http_header_filter_module.c
+*** nginx-1.9.2/src/http/ngx_http_header_filter_module.c	2015-06-16 22:49:45.000000000 +0800
+--- nginx-1.9.2-new/src/http/ngx_http_header_filter_module.c	2015-06-18 15:51:23.000000000 +0800
 ***************
 *** 46,52 ****
   };
