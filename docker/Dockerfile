@@ -7,21 +7,27 @@ RUN echo 'deb https://get.docker.com/ubuntu docker main' > /etc/apt/sources.list
 
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
 
-ENV DOCKER_VERSION 1.6.0
+ENV DOCKER_VERSIONS 1.6.0 1.7.0
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
-    install -y lxc-docker-${DOCKER_VERSION}
+RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
+    apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
+    install -y lxc-docker-${DOCKER_VERSION}; \
+    done
 
 RUN apt-get purge --auto-remove -y apt-transport-https
 
-RUN apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
-    install -y lxc-docker-${DOCKER_VERSION}
+RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
+    apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
+    install -y lxc-docker-${DOCKER_VERSION}; \
+    done
 
-RUN find /opt/docker-${DOCKER_VERSION}/* -not -name '*.deb' -delete && \
-    cd /opt && tar -cv docker-${DOCKER_VERSION} | gzip -n > docker-${DOCKER_VERSION}.tar.gz
+RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
+    find /opt/docker-${DOCKER_VERSION}/* -not -name '*.deb' -delete && \
+    cd /opt && tar -cv docker-${DOCKER_VERSION} | gzip -n > docker-${DOCKER_VERSION}.tar.gz; \
+    done
 
 VOLUME /docker
 
-CMD cp /opt/docker-${DOCKER_VERSION}.tar.gz /docker
+CMD cp /opt/docker-*.tar.gz /docker
