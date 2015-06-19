@@ -47,3 +47,8 @@ openjdk:
   build: openjdk
   volumes:
     - '/srv/downloads/openjdk/ubuntu/14.04:/openjdk'
+
+compose:
+  build: compose
+  volumes:
+    - '/srv/downloads/compose:/compose'
