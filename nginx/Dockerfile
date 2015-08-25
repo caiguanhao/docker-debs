@@ -27,4 +27,4 @@ RUN cd nginx-* && patch -p1 -i /opt/source.patch && dpkg-buildpackage -b
 
 VOLUME /nginx
 
-CMD mv nginx_*_amd64.deb /nginx
+CMD cp -nv nginx_*_amd64.deb /nginx

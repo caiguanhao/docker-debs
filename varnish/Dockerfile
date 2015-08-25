@@ -22,4 +22,4 @@ RUN apt-get update && \
 
 VOLUME /varnish
 
-CMD cp /opt/varnish.tar.gz /varnish
+CMD cp -nv /opt/varnish.tar.gz /varnish

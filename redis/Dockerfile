@@ -21,4 +21,4 @@ RUN apt-get update && \
 
 VOLUME /mnt
 
-CMD cp /opt/redis-${REDIS_VERSION}.tar.gz /mnt
+CMD cp -nv /opt/redis-${REDIS_VERSION}.tar.gz /mnt

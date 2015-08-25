@@ -28,4 +28,4 @@ RUN apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=libpq-dev-${POSTGRESQL
 
 VOLUME /mnt
 
-CMD cp /opt/postgresql-${POSTGRESQL_VERSION}.tar.gz /opt/libpq-dev-${POSTGRESQL_VERSION}.tar.gz /mnt
+CMD cp -nv /opt/postgresql-${POSTGRESQL_VERSION}.tar.gz /opt/libpq-dev-${POSTGRESQL_VERSION}.tar.gz /mnt

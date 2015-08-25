@@ -63,4 +63,4 @@ RUN su -s /bin/bash deploy -c 'cd ~/.rbenv/versions && tar cfvz ~/ruby-$RUBY_VER
 
 VOLUME /ruby
 
-CMD cp /home/deploy/ruby-$RUBY_VERSION.tar.gz /ruby
+CMD cp -nv /home/deploy/ruby-$RUBY_VERSION.tar.gz /ruby

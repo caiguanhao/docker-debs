@@ -18,4 +18,4 @@ RUN apt-get update && \
 
 VOLUME /openjdk
 
-CMD cp /opt/openjdk-7-jdk.tar.gz /openjdk
+CMD cp -nv /opt/openjdk-7-jdk.tar.gz /openjdk

@@ -27,4 +27,4 @@ RUN find /opt/wkhtmltox-${WKHTMLTOX_VERSION}/* -not -name '*.deb' -delete && \
     mv wkhtmltox-${WKHTMLTOX_VERSION}_linux-trusty-amd64.deb /opt/wkhtmltox-${WKHTMLTOX_VERSION} && \
     cd /opt && tar -cv wkhtmltox-${WKHTMLTOX_VERSION} | gzip -n > wkhtmltox-${WKHTMLTOX_VERSION}.tar.gz
 
-CMD cp /opt/wkhtmltox-${WKHTMLTOX_VERSION}.tar.gz /wkhtmltox
+CMD cp -nv /opt/wkhtmltox-${WKHTMLTOX_VERSION}.tar.gz /wkhtmltox
