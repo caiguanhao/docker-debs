@@ -13,4 +13,4 @@ RUN for COMPOSE_VERSION in $COMPOSE_VERSIONS; do \
     done
 
 VOLUME /compose
-CMD cp -r /opt/* /compose
+CMD cp -rnv /opt/* /compose
