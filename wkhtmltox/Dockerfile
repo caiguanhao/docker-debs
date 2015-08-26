@@ -15,7 +15,7 @@ RUN apt-get update && apt-get upgrade -y
 ENV WKHTMLTOX_VERSION 0.12.2.1
 
 RUN python3 -c "from urllib.request import urlretrieve; \
-    urlretrieve('http://downloads.sourceforge.net/wkhtmltopdf/wkhtmltox-${WKHTMLTOX_VERSION}_linux-trusty-amd64.deb', \
+    urlretrieve('http://download.gna.org/wkhtmltopdf/0.12/${WKHTMLTOX_VERSION}/wkhtmltox-${WKHTMLTOX_VERSION}_linux-trusty-amd64.deb', \
     'wkhtmltox-${WKHTMLTOX_VERSION}_linux-trusty-amd64.deb')"
 
 RUN dpkg-deb --showformat '${Depends}\n' -W wkhtmltox-${WKHTMLTOX_VERSION}_linux-trusty-amd64.deb | \

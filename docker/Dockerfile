@@ -1,13 +1,12 @@
 FROM ubuntu:14.04
 
-RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y apt-transport-https
+RUN apt-get update && apt-get install -y apt-transport-https
 
 RUN echo 'deb https://get.docker.com/ubuntu docker main' > /etc/apt/sources.list.d/docker.list
 
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
 
-ENV DOCKER_VERSIONS 1.6.0 1.7.0 1.8.0
+ENV DOCKER_VERSIONS 1.6.0 1.7.0
 
 RUN apt-get update && apt-get upgrade -y
 
