@@ -1,17 +1,19 @@
 FROM buildpack-deps:jessie
 
-WORKDIR /opt/monit-5.12.2
+WORKDIR /opt/monit
 
-RUN curl -fSs https://mmonit.com/monit/dist/monit-5.12.2.tar.gz | tar --strip-components 1 -xvzf -
+RUN apt-get update && apt-get install -y bison flex
 
-ADD simplify.patch /tmp/simplify.patch
+RUN git clone https://github.com/GaiaMagic/monit /opt/monit
 
-RUN patch -p1 -i /tmp/simplify.patch
+RUN sed -i 's#git@bitbucket.org:#https://bitbucket.org/#' .gitmodules
 
-RUN ./configure --without-pam && make
+RUN git submodule init && git submodule update
 
-RUN tar -cv monit monit.1 | gzip -n > monit-5.12.2.tar.gz
+RUN ./bootstrap && ./configure --without-pam && make
+
+RUN tar -cv monit monit.1 | gzip -n > monit.tar.gz
 
 VOLUME /monit
 
-CMD cp -nv monit-5.12.2.tar.gz /monit
+CMD cp -nv monit.tar.gz /monit
