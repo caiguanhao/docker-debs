@@ -4,7 +4,7 @@ WORKDIR /opt/monit
 
 RUN apt-get update && apt-get install -y bison flex
 
-RUN git clone https://github.com/GaiaMagic/monit /opt/monit
+RUN git clone --branch gm https://github.com/GaiaMagic/monit /opt/monit
 
 RUN sed -i 's#git@bitbucket.org:#https://bitbucket.org/#' .gitmodules
 
@@ -16,4 +16,4 @@ RUN tar -cv monit monit.1 | gzip -n > monit.tar.gz
 
 VOLUME /monit
 
-CMD cp -nv monit.tar.gz /monit
+CMD cp -v monit.tar.gz /monit
