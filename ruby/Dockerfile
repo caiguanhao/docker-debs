@@ -55,7 +55,7 @@ ENV RUBY_VERSION 2.3.0
 
 RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
-    sed -i "s!http://cache.ruby-lang.org/pub!https://ruby.taobao.org/mirrors!" ~/.rbenv/plugins/ruby-build/share/ruby-build/$RUBY_VERSION && \
+    sed -i "s!https://cache.ruby-lang.org/pub!https://ruby.taobao.org/mirrors!" ~/.rbenv/plugins/ruby-build/share/ruby-build/$RUBY_VERSION && \
     export RUBY_BUILD_SKIP_MIRROR=1 && \
     CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v $RUBY_VERSION'
 
