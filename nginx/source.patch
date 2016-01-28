@@ -1,8 +1,8 @@
-diff -cr nginx-1.9.4/debian/rules nginx-1.9.4-new/debian/rules
-*** nginx-1.9.4/debian/rules	2015-06-16 23:48:42.000000000 +0800
---- nginx-1.9.4-new/debian/rules	2015-06-18 15:57:50.000000000 +0800
+diff -cr old/debian/rules new/debian/rules
+*** old/debian/rules	2016-01-27 00:02:26.000000000 +0800
+--- new/debian/rules	2016-01-27 20:49:11.000000000 +0800
 ***************
-*** 33,56 ****
+*** 33,57 ****
   		--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
   		--user=nginx \
   		--group=nginx \
@@ -22,12 +22,13 @@ diff -cr nginx-1.9.4/debian/rules nginx-1.9.4-new/debian/rules
   		--with-threads \
   		--with-stream \
   		--with-stream_ssl_module \
+  		--with-http_slice_module \
 - 		--with-mail \
 - 		--with-mail_ssl_module \
   		--with-file-aio \
-  		$(WITH_SPDY) \
+  		$(WITH_HTTP2) \
   		--with-cc-opt="$(CFLAGS)" \
---- 33,47 ----
+--- 33,48 ----
   		--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
   		--user=nginx \
   		--group=nginx \
@@ -40,52 +41,53 @@ diff -cr nginx-1.9.4/debian/rules nginx-1.9.4-new/debian/rules
   		--with-threads \
   		--with-stream \
   		--with-stream_ssl_module \
+  		--with-http_slice_module \
   		--with-file-aio \
-  		$(WITH_SPDY) \
+  		$(WITH_HTTP2) \
   		--with-cc-opt="$(CFLAGS)" \
-diff -cr nginx-1.9.4/src/core/nginx.c nginx-1.9.4-new/src/core/nginx.c
-*** nginx-1.9.4/src/core/nginx.c	2015-06-16 22:49:42.000000000 +0800
---- nginx-1.9.4-new/src/core/nginx.c	2015-06-18 15:51:23.000000000 +0800
+diff -cr old/src/core/nginx.c new/src/core/nginx.c
+*** old/src/core/nginx.c	2016-01-26 22:27:41.000000000 +0800
+--- new/src/core/nginx.c	2016-01-27 20:51:51.000000000 +0800
 ***************
-*** 194,200 ****
-      }
+*** 366,372 ****
+  static void
+  ngx_show_version_info()
+  {
+!     ngx_write_stderr("nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
   
-      if (ngx_show_version) {
-!         ngx_write_stderr("nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
+      if (ngx_show_help) {
+          ngx_write_stderr(
+--- 366,372 ----
+  static void
+  ngx_show_version_info()
+  {
+!     ngx_write_stderr("nginx version: " NGINX_VER_BUILD " (" NGINX_VERSION ")" NGX_LINEFEED);
   
-          if (ngx_show_help) {
-              ngx_write_stderr(
---- 194,200 ----
-      }
-  
-      if (ngx_show_version) {
-!         ngx_write_stderr("nginx version: " NGINX_VER_BUILD " (" NGINX_VERSION ")" NGX_LINEFEED);
-  
-          if (ngx_show_help) {
-              ngx_write_stderr(
-diff -cr nginx-1.9.4/src/core/nginx.h nginx-1.9.4-new/src/core/nginx.h
-*** nginx-1.9.4/src/core/nginx.h	2015-06-16 22:49:42.000000000 +0800
---- nginx-1.9.4-new/src/core/nginx.h	2015-06-18 15:51:23.000000000 +0800
+      if (ngx_show_help) {
+          ngx_write_stderr(
+diff -cr old/src/core/nginx.h new/src/core/nginx.h
+*** old/src/core/nginx.h	2016-01-26 22:27:41.000000000 +0800
+--- new/src/core/nginx.h	2016-01-27 20:52:40.000000000 +0800
 ***************
 *** 11,17 ****
   
-  #define nginx_version      1009002
-  #define NGINX_VERSION      "1.9.4"
+  #define nginx_version      1009010
+  #define NGINX_VERSION      "1.9.10"
 ! #define NGINX_VER          "nginx/" NGINX_VERSION
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 --- 11,17 ----
   
-  #define nginx_version      1009002
-  #define NGINX_VERSION      "1.9.4"
+  #define nginx_version      1009010
+  #define NGINX_VERSION      "1.9.10"
 ! #define NGINX_VER          "GaiaMagic"
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
-diff -cr nginx-1.9.4/src/http/ngx_http_header_filter_module.c nginx-1.9.4-new/src/http/ngx_http_header_filter_module.c
-*** nginx-1.9.4/src/http/ngx_http_header_filter_module.c	2015-06-16 22:49:45.000000000 +0800
---- nginx-1.9.4-new/src/http/ngx_http_header_filter_module.c	2015-06-18 15:51:23.000000000 +0800
+diff -cr old/src/http/ngx_http_header_filter_module.c new/src/http/ngx_http_header_filter_module.c
+*** old/src/http/ngx_http_header_filter_module.c	2016-01-26 22:27:43.000000000 +0800
+--- new/src/http/ngx_http_header_filter_module.c	2016-01-27 20:53:15.000000000 +0800
 ***************
 *** 46,52 ****
   };
