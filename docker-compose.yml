@@ -1,54 +1,54 @@
 gitrepos:
   build: git-repos
   volumes:
-    - '/srv/downloads/git-repos:/git'
+    - './build/git-repos:/git'
 
 postgresql:
   build: postgresql
   volumes:
-    - '/srv/downloads/postgresql/ubuntu/14.04:/mnt'
+    - './build/postgresql/ubuntu/14.04:/mnt'
 
 redis:
   build: redis
   volumes:
-    - '/srv/downloads/redis/ubuntu/14.04:/mnt'
+    - './build/redis/ubuntu/14.04:/mnt'
 
 ruby:
   build: ruby
   volumes:
-    - '/srv/downloads/ruby/ubuntu/14.04:/ruby'
+    - './build/ruby/ubuntu/14.04:/ruby'
 
 nginx:
   build: nginx
   volumes:
-    - '/srv/downloads/nginx/ubuntu/14.04:/nginx'
+    - './build/nginx/ubuntu/14.04:/nginx'
 
 monit:
   build: monit
   volumes:
-    - '/srv/downloads/monit/ubuntu/14.04:/monit'
+    - './build/monit/ubuntu/14.04:/monit'
 
 docker:
   build: docker
   volumes:
-    - '/srv/downloads/docker/ubuntu/14.04:/docker'
+    - './build/docker/ubuntu/14.04:/docker'
 
 wkhtmltox:
   build: wkhtmltox
   volumes:
-    - '/srv/downloads/wkhtmltox/ubuntu/14.04:/wkhtmltox'
+    - './build/wkhtmltox/ubuntu/14.04:/wkhtmltox'
 
 varnish:
   build: varnish
   volumes:
-    - '/srv/downloads/varnish/ubuntu/14.04:/varnish'
+    - './build/varnish/ubuntu/14.04:/varnish'
 
 openjdk:
   build: openjdk
   volumes:
-    - '/srv/downloads/openjdk/ubuntu/14.04:/openjdk'
+    - './build/openjdk/ubuntu/14.04:/openjdk'
 
 compose:
   build: compose
   volumes:
-    - '/srv/downloads/compose:/compose'
+    - './build/compose:/compose'
