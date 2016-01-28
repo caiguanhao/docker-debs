@@ -1,13 +1,8 @@
 monit
 =====
 
-The monit web interface has been simplified.
-
-I have removed the "buttons" in the web interface, but the API is still untouched.
-This is because the monit command uses the same API. Removing these API means
-you can use monit command like `monit unmonitor -g delayed_jobs`.
-
-So currently a workaround would be to only allow GET requests:
+If you want to use monit web interface,
+remember to ban the non-GET requests:
 
 ```nginx
 server {

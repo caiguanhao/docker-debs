@@ -51,7 +51,7 @@ RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/rbenv.gi
 
 RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build'
 
-ENV RUBY_VERSION 2.2.2
+ENV RUBY_VERSION 2.3.0
 
 RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
