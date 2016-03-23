@@ -21,6 +21,8 @@ RUN echo "deb-src http://nginx.org/packages/mainline/ubuntu trusty nginx" > \
 
 RUN apt-get source nginx
 
+RUN curl -Ls https://github.com/vozlt/nginx-module-vts/archive/v0.1.9.tar.gz | tar xfvz -
+
 ADD source.patch /opt/source.patch
 
 RUN cd nginx-* && patch -p1 -i /opt/source.patch && dpkg-buildpackage -b
