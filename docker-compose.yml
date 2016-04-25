@@ -43,6 +43,11 @@ varnish:
   volumes:
     - './build/varnish/ubuntu/14.04:/varnish'
 
+mongodb:
+  build: mongodb
+  volumes:
+    - './build/mongodb/ubuntu/14.04:/mongodb'
+
 openjdk:
   build: openjdk
   volumes:
