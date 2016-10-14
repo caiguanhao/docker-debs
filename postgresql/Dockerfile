@@ -13,7 +13,7 @@ RUN test $(cat /tmp/country) = "CN" && { \
     sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list; \
     } || true
 
-ENV POSTGRESQL_VERSION 9.4
+ENV POSTGRESQL_VERSION 9.5
 
 RUN apt-get update && \
     apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=postgresql-${POSTGRESQL_VERSION} \
