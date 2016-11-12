@@ -17,18 +17,16 @@ RUN echo "deb-src http://nginx.org/packages/mainline/ubuntu trusty nginx" > \
     apt-key add - && \
     apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev
+    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev quilt
 
 RUN apt-get source nginx
 
-RUN curl -Ls https://github.com/vozlt/nginx-module-vts/archive/v0.1.9.tar.gz | tar xfvz -
+RUN curl -Ls https://github.com/vozlt/nginx-module-vts/archive/v0.1.11.tar.gz | tar xfvz -
 
 ADD source.patch /opt/source.patch
 
-RUN cd nginx-* && patch -p1 -i /opt/source.patch
-
-RUN cd nginx-* && curl -Ls https://raw.githubusercontent.com/caiguanhao/cache-got-hit/4de5d1d82d84de3fa84ee53d52d79134e0444b61/ngx_http_memcached_module.c.patch | \
-    patch src/http/modules/ngx_http_memcached_module.c
+RUN cd nginx-* && patch -p1 -i /opt/source.patch && \
+    echo 'debian/build-nginx/objs/ngx_http_vhost_traffic_status_module.so usr/lib/nginx/modules' >> debian/nginx.install
 
 RUN cd nginx-* && dpkg-buildpackage -b
 
