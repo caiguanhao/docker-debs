@@ -16,12 +16,12 @@ RUN apt-get update && \
 
 RUN curl -Ls https://github.com/lamby/pkg-redis/archive/debian/sid.tar.gz | tar xfvz -
 
-RUN apt-get install -y dh-systemd libjemalloc-dev tcl
+RUN apt-get install -y dh-systemd libjemalloc-dev tcl && apt-get download libjemalloc1
 
 RUN cd pkg-redis-debian-sid && DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -b
 
-RUN apt-get download libjemalloc1
+RUN mkdir -p redis-3.2.5 && cp *.deb redis-3.2.5 && tar -cv redis-3.2.5 | gzip -n > redis-3.2.5.tar.gz
 
 VOLUME /redis
 
-CMD cp -nv *_amd64.deb /redis
+CMD cp -nv /opt/redis-3.2.5.tar.gz /redis
