@@ -1,5 +1,7 @@
 FROM ubuntu:14.04
 
+WORKDIR /opt
+
 RUN python3 -c 'from urllib.request import urlopen; from json import loads; \
     print(loads(urlopen("http://ip-api.com/json").read().decode("utf-8" \
     ).strip())["countryCode"])' > /tmp/country
@@ -8,17 +10,18 @@ RUN test $(cat /tmp/country) = "CN" && { \
     sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list; \
     } || true
 
-ENV REDIS_VERSION 2.8.4
-ENV REDIS_APT_VERSION 2:2.8.4-2
-
 RUN apt-get update && \
-    apt-get -d \
-       -o Dir::Cache=/opt \
-       -o Dir::Cache::archives=redis-${REDIS_VERSION} \
-       install -y redis-server=${REDIS_APT_VERSION} && \
-    find /opt/redis-${REDIS_VERSION}/* -not -name '*.deb' -delete && \
-    cd /opt && tar -cv redis-${REDIS_VERSION} | gzip -n > redis-${REDIS_VERSION}.tar.gz
+    apt-get upgrade -y && \
+    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev curl
 
-VOLUME /mnt
+RUN curl -Ls https://github.com/lamby/pkg-redis/archive/debian/sid.tar.gz | tar xfvz -
 
-CMD cp -nv /opt/redis-${REDIS_VERSION}.tar.gz /mnt
+RUN apt-get install -y dh-systemd libjemalloc-dev tcl
+
+RUN cd pkg-redis-debian-sid && DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -b
+
+RUN apt-get download libjemalloc1
+
+VOLUME /redis
+
+CMD cp -nv *_amd64.deb /redis

@@ -11,7 +11,7 @@ postgresql:
 redis:
   build: redis
   volumes:
-    - './build/redis/ubuntu/14.04:/mnt'
+    - './build/redis/ubuntu/14.04:/redis'
 
 ruby:
   build: ruby
