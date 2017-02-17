@@ -2,7 +2,7 @@ FROM buildpack-deps:jessie
 
 ENV URL https://github.com/docker/compose/releases/download
 
-ENV COMPOSE_VERSIONS 1.5.2
+ENV COMPOSE_VERSIONS 1.11.1
 
 RUN for COMPOSE_VERSION in $COMPOSE_VERSIONS; do \
     cd /opt && mkdir -p $COMPOSE_VERSION && cd $COMPOSE_VERSION && \

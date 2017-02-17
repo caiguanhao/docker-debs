@@ -1,14 +1,6 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 WORKDIR /opt
-
-RUN python3 -c 'from urllib.request import urlopen; from json import loads; \
-    print(loads(urlopen("http://ip-api.com/json").read().decode("utf-8" \
-    ).strip())["countryCode"])' > /tmp/country
-
-RUN test $(cat /tmp/country) = "CN" && { \
-    sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list; \
-    } || true
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -20,8 +12,8 @@ RUN apt-get install -y dh-systemd libjemalloc-dev tcl && apt-get download libjem
 
 RUN cd pkg-redis-debian-sid && DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -b
 
-RUN mkdir -p redis-3.2.5 && cp *.deb redis-3.2.5 && tar -cv redis-3.2.5 | gzip -n > redis-3.2.5.tar.gz
+RUN mkdir -p redis-3.2.8 && cp *.deb redis-3.2.8 && tar -cv redis-3.2.8 | gzip -n > redis-3.2.8.tar.gz
 
 VOLUME /redis
 
-CMD cp -nv /opt/redis-3.2.5.tar.gz /redis
+CMD cp -nv /opt/redis-3.2.8.tar.gz /redis

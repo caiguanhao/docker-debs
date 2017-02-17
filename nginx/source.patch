@@ -1,8 +1,8 @@
 diff -Ncr old/debian/rules new/debian/rules
-*** old/debian/rules	2016-11-12 09:45:13.000000000 +0800
---- new/debian/rules	2016-11-12 09:50:40.000000000 +0800
+*** old/debian/rules	Fri Feb 17 11:17:50 2017
+--- new/debian/rules	Fri Feb 17 11:19:52 2017
 ***************
-*** 36,47 ****
+*** 38,49 ****
   
   config.status.nginx: config.env.nginx
   	cd $(BUILDDIR_nginx) && \
@@ -15,7 +15,7 @@ diff -Ncr old/debian/rules new/debian/rules
   	touch $@
   
   build-arch.%: config.status.%
---- 36,47 ----
+--- 38,49 ----
   
   config.status.nginx: config.env.nginx
   	cd $(BUILDDIR_nginx) && \
@@ -29,62 +29,62 @@ diff -Ncr old/debian/rules new/debian/rules
   
   build-arch.%: config.status.%
 diff -Ncr old/src/core/nginx.c new/src/core/nginx.c
-*** old/src/core/nginx.c	2016-11-12 09:45:13.000000000 +0800
---- new/src/core/nginx.c	2016-11-12 09:50:40.000000000 +0800
+*** old/src/core/nginx.c	Fri Feb 17 11:17:50 2017
+--- new/src/core/nginx.c	Fri Feb 17 11:20:35 2017
 ***************
-*** 374,380 ****
+*** 375,381 ****
   static void
-  ngx_show_version_info()
+  ngx_show_version_info(void)
   {
 !     ngx_write_stderr("nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
   
       if (ngx_show_help) {
           ngx_write_stderr(
---- 374,380 ----
+--- 375,381 ----
   static void
-  ngx_show_version_info()
+  ngx_show_version_info(void)
   {
 !     ngx_write_stderr("nginx version: " NGINX_VER_BUILD " (" NGINX_VERSION ")" NGX_LINEFEED);
   
       if (ngx_show_help) {
           ngx_write_stderr(
 diff -Ncr old/src/core/nginx.h new/src/core/nginx.h
-*** old/src/core/nginx.h	2016-11-12 09:45:13.000000000 +0800
---- new/src/core/nginx.h	2016-11-12 09:51:36.000000000 +0800
+*** old/src/core/nginx.h	Fri Feb 17 11:17:50 2017
+--- new/src/core/nginx.h	Fri Feb 17 11:41:25 2017
 ***************
 *** 11,17 ****
   
-  #define nginx_version      1011005
-  #define NGINX_VERSION      "1.11.5"
+  #define nginx_version      1011010
+  #define NGINX_VERSION      "1.11.10"
 ! #define NGINX_VER          "nginx/" NGINX_VERSION
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 --- 11,17 ----
   
-  #define nginx_version      1011005
-  #define NGINX_VERSION      "1.11.5"
-! #define NGINX_VER          "CGH"
+  #define nginx_version      1011010
+  #define NGINX_VERSION      "1.11.10"
+! #define NGINX_VER          "CGHServer"
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 diff -Ncr old/src/http/ngx_http_header_filter_module.c new/src/http/ngx_http_header_filter_module.c
-*** old/src/http/ngx_http_header_filter_module.c	2016-11-12 09:45:13.000000000 +0800
---- new/src/http/ngx_http_header_filter_module.c	2016-11-12 09:52:06.000000000 +0800
+*** old/src/http/ngx_http_header_filter_module.c	Fri Feb 17 11:17:50 2017
+--- new/src/http/ngx_http_header_filter_module.c	Fri Feb 17 11:42:34 2017
 ***************
 *** 46,52 ****
   };
   
   
-! static char ngx_http_server_string[] = "Server: nginx" CRLF;
-  static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-  
+! static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
+  static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+  static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
   
 --- 46,52 ----
   };
   
   
-! static char ngx_http_server_string[] = "Server: CGH" CRLF;
-  static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-  
+! static u_char ngx_http_server_string[] = "Server: CGHServer" CRLF;
+  static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+  static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
   

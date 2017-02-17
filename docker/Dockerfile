@@ -1,25 +1,18 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-RUN echo 'deb https://get.docker.com/ubuntu docker main' > /etc/apt/sources.list.d/docker.list
+RUN curl -fsSL https://apt.dockerproject.org/gpg | apt-key add -
 
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
-
-ENV DOCKER_VERSIONS 1.9.0
+RUN add-apt-repository "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
-    apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
-    install -y lxc-docker-${DOCKER_VERSION}; \
-    done
-
-RUN apt-get purge --auto-remove -y apt-transport-https
+ENV DOCKER_VERSIONS 1.13.1
 
 RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
     apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=docker-${DOCKER_VERSION} \
-    install -y lxc-docker-${DOCKER_VERSION}; \
+    install --no-install-recommends -y docker-engine=${DOCKER_VERSION}-0~ubuntu-xenial; \
     done
 
 RUN for DOCKER_VERSION in $DOCKER_VERSIONS; do \
