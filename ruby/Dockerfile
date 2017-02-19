@@ -1,14 +1,6 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 WORKDIR /opt
-
-RUN python3 -c 'from urllib.request import urlopen; from json import loads; \
-    print(loads(urlopen("http://ip-api.com/json").read().decode("utf-8" \
-    ).strip())["countryCode"])' > /tmp/country
-
-RUN test $(cat /tmp/country) = "CN" && { \
-    sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list; \
-    } || true
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -51,16 +43,16 @@ RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/rbenv.gi
 
 RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build'
 
-ENV RUBY_VERSION 2.3.0
+RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
+    eval "$(rbenv init -)" && \
+    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.3.3 && \
+    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.3.3.tar.gz 2.3.3'
 
 RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
-    sed -i "s!https://cache.ruby-lang.org/pub!https://ruby.taobao.org/mirrors!" ~/.rbenv/plugins/ruby-build/share/ruby-build/$RUBY_VERSION && \
-    export RUBY_BUILD_SKIP_MIRROR=1 && \
-    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v $RUBY_VERSION'
-
-RUN su -s /bin/bash deploy -c 'cd ~/.rbenv/versions && tar cfvz ~/ruby-$RUBY_VERSION.tar.gz $RUBY_VERSION'
+    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.0 && \
+    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.0.tar.gz 2.4.0'
 
 VOLUME /ruby
 
-CMD cp -nv /home/deploy/ruby-$RUBY_VERSION.tar.gz /ruby
+CMD cp -v /home/deploy/ruby-*.tar.gz /ruby
