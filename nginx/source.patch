@@ -1,21 +1,38 @@
 diff -Ncr old/debian/rules new/debian/rules
-*** old/debian/rules	Mon Feb 20 16:33:01 2017
---- new/debian/rules	Mon Feb 20 16:34:22 2017
+*** old/debian/rules	Fri Feb 17 11:17:50 2017
+--- new/debian/rules	Fri Feb 17 11:19:52 2017
 ***************
-*** 125,130 ****
---- 125,131 ----
-  			--with-stream \
-  			--with-stream_ssl_module \
-  			--with-threads \
-+ 			--add-module=/opt/nginx-module-vts-0.1.11 \
-  			--add-module=$(MODULESDIR)/headers-more-nginx-module \
-  			--add-module=$(MODULESDIR)/nginx-auth-pam \
-  			--add-module=$(MODULESDIR)/nginx-cache-purge \
+*** 38,49 ****
+  
+  config.status.nginx: config.env.nginx
+  	cd $(BUILDDIR_nginx) && \
+! 	CFLAGS="" ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt="$(CFLAGS)" --with-ld-opt="$(LDFLAGS)"
+  	touch $@
+  
+  config.status.nginx_debug: config.env.nginx_debug
+  	cd $(BUILDDIR_nginx_debug) && \
+! 	CFLAGS="" ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt="$(CFLAGS)" --with-ld-opt="$(LDFLAGS)" --with-debug
+  	touch $@
+  
+  build-arch.%: config.status.%
+--- 38,49 ----
+  
+  config.status.nginx: config.env.nginx
+  	cd $(BUILDDIR_nginx) && \
+! 	CFLAGS="" ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --add-dynamic-module=/opt/nginx-module-vts-0.1.11 --with-cc-opt="$(CFLAGS)" --with-ld-opt="$(LDFLAGS)"
+  	touch $@
+  
+  config.status.nginx_debug: config.env.nginx_debug
+  	cd $(BUILDDIR_nginx_debug) && \
+! 	CFLAGS="" ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --add-dynamic-module=/opt/nginx-module-vts-0.1.11 --with-cc-opt="$(CFLAGS)" --with-ld-opt="$(LDFLAGS)" --with-debug
+  	touch $@
+  
+  build-arch.%: config.status.%
 diff -Ncr old/src/core/nginx.c new/src/core/nginx.c
-*** old/src/core/nginx.c	Mon Feb 20 16:33:01 2017
---- new/src/core/nginx.c	Tue Feb 21 00:41:09 2017
+*** old/src/core/nginx.c	Fri Feb 17 11:17:50 2017
+--- new/src/core/nginx.c	Fri Feb 17 11:20:35 2017
 ***************
-*** 374,380 ****
+*** 375,381 ****
   static void
   ngx_show_version_info(void)
   {
@@ -23,7 +40,7 @@ diff -Ncr old/src/core/nginx.c new/src/core/nginx.c
   
       if (ngx_show_help) {
           ngx_write_stderr(
---- 374,380 ----
+--- 375,381 ----
   static void
   ngx_show_version_info(void)
   {
@@ -32,42 +49,42 @@ diff -Ncr old/src/core/nginx.c new/src/core/nginx.c
       if (ngx_show_help) {
           ngx_write_stderr(
 diff -Ncr old/src/core/nginx.h new/src/core/nginx.h
-*** old/src/core/nginx.h	Mon Feb 20 16:33:01 2017
---- new/src/core/nginx.h	Tue Feb 21 00:40:05 2017
+*** old/src/core/nginx.h	Fri Feb 17 11:17:50 2017
+--- new/src/core/nginx.h	Fri Feb 17 11:41:25 2017
 ***************
 *** 11,17 ****
   
-  #define nginx_version      1010000
-  #define NGINX_VERSION      "1.10.0"
-! #define NGINX_VER          "nginx/" NGINX_VERSION " (Ubuntu)"
+  #define nginx_version      1011010
+  #define NGINX_VERSION      "1.11.10"
+! #define NGINX_VER          "nginx/" NGINX_VERSION
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 --- 11,17 ----
   
-  #define nginx_version      1010000
-  #define NGINX_VERSION      "1.10.0"
-! #define NGINX_VER          "BEYOND"
+  #define nginx_version      1011010
+  #define NGINX_VERSION      "1.11.10"
+! #define NGINX_VER          "CGHServer"
   
   #ifdef NGX_BUILD
   #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 diff -Ncr old/src/http/ngx_http_header_filter_module.c new/src/http/ngx_http_header_filter_module.c
-*** old/src/http/ngx_http_header_filter_module.c	Mon Feb 20 16:33:01 2017
---- new/src/http/ngx_http_header_filter_module.c	Tue Feb 21 00:41:48 2017
+*** old/src/http/ngx_http_header_filter_module.c	Fri Feb 17 11:17:50 2017
+--- new/src/http/ngx_http_header_filter_module.c	Fri Feb 17 11:42:34 2017
 ***************
 *** 46,52 ****
   };
   
   
-! static char ngx_http_server_string[] = "Server: nginx" CRLF;
-  static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-  
+! static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
+  static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+  static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
   
 --- 46,52 ----
   };
   
   
-! static char ngx_http_server_string[] = "Server: BEYOND" CRLF;
-  static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-  
+! static u_char ngx_http_server_string[] = "Server: CGHServer" CRLF;
+  static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+  static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
   

@@ -7,16 +7,18 @@ RUN echo "deb-src http://nginx.org/packages/mainline/ubuntu xenial nginx" > \
     apt-key adv --fetch-keys http://nginx.org/keys/nginx_signing.key && \
     apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y dh-systemd dpkg-dev debhelper zlib1g-dev quilt lsb-release \
-    libssl-dev libpcre3-dev libexpat-dev libgd-dev libgeoip-dev libluajit-5.1-dev libmhash-dev libpam0g-dev libperl-dev libxslt1-dev
+    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev quilt lsb-release
 
-RUN apt-get source nginx=1.10.0-0ubuntu0.16.04.4
+RUN apt-get source nginx
 
 RUN curl -Ls https://github.com/vozlt/nginx-module-vts/archive/v0.1.11.tar.gz | tar xfvz -
 
 ADD source.patch /opt/source.patch
 
-RUN cd nginx-* && patch -p1 -i /opt/source.patch && dpkg-buildpackage -b
+RUN cd nginx-* && patch -p1 -i /opt/source.patch && \
+    echo 'debian/build-nginx/objs/ngx_http_vhost_traffic_status_module.so usr/lib/nginx/modules' >> debian/nginx.install
+
+RUN cd nginx-* && dpkg-buildpackage -b
 
 VOLUME /nginx
 
