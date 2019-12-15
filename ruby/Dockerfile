@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 WORKDIR /opt
 
@@ -14,7 +14,7 @@ RUN apt-get install -y \
       libevent-dev \
       libffi-dev \
       libglib2.0-dev \
-      libgdbm3 \
+      libgdbm5 \
       libgdbm-dev \
       libjpeg-dev \
       liblzma-dev \
@@ -35,19 +35,19 @@ RUN apt-get install -y \
 
 RUN apt-get install -y git curl
 
-RUN adduser --disabled-password --gecos '' ubuntu
+RUN adduser --disabled-password --gecos '' deploy
 
-RUN su -s /bin/bash ubuntu -c 'mkdir ~/.ssh && ssh-keyscan -H github.com >> ~/.ssh/known_hosts'
+RUN su -s /bin/bash deploy -c 'mkdir ~/.ssh && ssh-keyscan -H github.com >> ~/.ssh/known_hosts'
 
-RUN su -s /bin/bash ubuntu -c 'git clone https://github.com/sstephenson/rbenv.git ~/.rbenv'
+RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/rbenv.git ~/.rbenv'
 
-RUN su -s /bin/bash ubuntu -c 'git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build'
+RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build'
 
-RUN su -s /bin/bash ubuntu -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
+RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
-    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.0 && \
-    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.0.tar.gz 2.4.0'
+    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.4 && \
+    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.4.tar.gz 2.4.4'
 
 VOLUME /ruby
 
-CMD cp -v /home/ubuntu/ruby-*.tar.gz /ruby
+CMD cp -v /home/deploy/ruby-*.tar.gz /ruby
