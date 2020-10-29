@@ -1,10 +1,10 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /opt
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
       autoconf \
       bison \
       build-essential \
@@ -14,7 +14,7 @@ RUN apt-get install -y \
       libevent-dev \
       libffi-dev \
       libglib2.0-dev \
-      libgdbm5 \
+      libgdbm6 \
       libgdbm-dev \
       libjpeg-dev \
       liblzma-dev \
@@ -45,8 +45,8 @@ RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/ruby-bui
 
 RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
-    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.4 && \
-    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.4.tar.gz 2.4.4'
+    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.10 && \
+    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.10.tar.gz 2.4.10'
 
 VOLUME /ruby
 

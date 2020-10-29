@@ -1,15 +1,21 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
-ADD key /tmp/key
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
 
-RUN apt-key add /tmp/key && \
-echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/psql.list
+RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
-ENV POSTGRESQL_VERSION 9.5
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main' > /etc/apt/sources.list.d/psql.list
+
+ENV POSTGRESQL_VERSION 12
 
 RUN apt-get update && \
     apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=postgresql-${POSTGRESQL_VERSION} \
-    install --no-install-recommends -y postgresql-${POSTGRESQL_VERSION} postgresql-contrib-${POSTGRESQL_VERSION} && \
+    install --no-install-recommends -y postgresql-${POSTGRESQL_VERSION} && \
     find /opt/postgresql-${POSTGRESQL_VERSION}/* -not -name '*.deb' -delete && \
     cd /opt && tar -cv postgresql-${POSTGRESQL_VERSION} | gzip -n > postgresql-${POSTGRESQL_VERSION}.tar.gz
 

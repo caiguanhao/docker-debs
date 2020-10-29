@@ -1,6 +1,4 @@
-FROM ubuntu:16.04
-
-RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+FROM ubuntu:20.04
 
 RUN apt-get update && \
     apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=memcached \

@@ -1,19 +1,13 @@
-FROM buildpack-deps:jessie
+FROM ubuntu:20.04
 
-WORKDIR /opt/monit
+RUN apt-get update
 
-RUN apt-get update && apt-get install -y bison flex
+RUN apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=monit \
+    install --no-install-recommends -y monit
 
-RUN git clone --branch gm https://github.com/GaiaMagic/monit /opt/monit
-
-RUN sed -i 's#git@bitbucket.org:#https://bitbucket.org/#' .gitmodules
-
-RUN git submodule init && git submodule update
-
-RUN ./bootstrap && ./configure --without-pam && make
-
-RUN tar -cv monit monit.1 | gzip -n > monit.tar.gz
+RUN find /opt/monit/* -not -name '*.deb' -delete && \
+    cd /opt && tar -cv monit | gzip -n > monit.tar.gz
 
 VOLUME /monit
 
-CMD cp -v monit.tar.gz /monit
+CMD cp -nv /opt/monit.tar.gz /monit

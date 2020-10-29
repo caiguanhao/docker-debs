@@ -1,24 +1,26 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
-WORKDIR /opt
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
 
-RUN echo "deb-src http://nginx.org/packages/mainline/ubuntu xenial nginx" > \
+RUN echo "deb-src http://nginx.org/packages/ubuntu/ focal nginx" > \
     /etc/apt/sources.list.d/nginx.list && \
     apt-key adv --fetch-keys http://nginx.org/keys/nginx_signing.key && \
     apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev quilt lsb-release
+    apt-get install --no-install-recommends -y \
+    lsb-release dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev quilt \
+    build-essential dh-systemd
 
-RUN apt-get source nginx=1.11.10-1~xenial
-
-RUN curl -Ls https://github.com/vozlt/nginx-module-vts/archive/v0.1.11.tar.gz | tar xfvz -
+RUN apt-get source nginx=1.18.0-1~focal
 
 ADD source.patch /opt/source.patch
 
-RUN cd nginx-* && patch -p1 -i /opt/source.patch && \
-    echo 'debian/build-nginx/objs/ngx_http_vhost_traffic_status_module.so usr/lib/nginx/modules' >> debian/nginx.install
-
-RUN cd nginx-* && dpkg-buildpackage -b
+RUN cd nginx-* && patch -p1 -i /opt/source.patch && dpkg-buildpackage -b
 
 VOLUME /nginx
 

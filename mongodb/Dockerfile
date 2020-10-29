@@ -1,30 +1,26 @@
-FROM ubuntu:14.04
+FROM ubuntu:20.04
 
-RUN python3 -c 'from urllib.request import urlopen; from json import loads; \
-    print(loads(urlopen("http://ip-api.com/json").read().decode("utf-8" \
-    ).strip())["countryCode"])' > /tmp/country
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
 
-RUN test $(cat /tmp/country) = "CN" && { \
-    sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list; \
-    } || true
+RUN curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
 
-RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | \
-    tee /etc/apt/sources.list.d/mongodb.list && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
-    apt-get update
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" >> /etc/apt/sources.list.d/mongodb-org-4.4.list
 
-RUN apt-get --no-install-recommends -d \
+ENV MONGODB_VERESION 4.4.0
+
+RUN apt-get update && apt-get --no-install-recommends -d \
        -o Dir::Cache=/opt \
-       -o Dir::Cache::archives=mongodb-2.6.9 \
-       install -y mongodb-org=2.6.9 \
-       mongodb-org-server=2.6.9 \
-       mongodb-org-shell=2.6.9 \
-       mongodb-org-mongos=2.6.9 \
-       mongodb-org-tools=2.6.9
+       -o Dir::Cache::archives=mongodb-$MONGODB_VERESION \
+       install -y mongodb-org=$MONGODB_VERESION
 
-RUN find /opt/mongodb-2.6.9/* -not -name '*.deb' -delete && \
-    cd /opt && tar -cv mongodb-2.6.9 | gzip -n > mongodb-2.6.9.tar.gz
+RUN find /opt/mongodb-$MONGODB_VERESION/* -not -name '*.deb' -delete && \
+    cd /opt && tar -cv mongodb-$MONGODB_VERESION | gzip -n > mongodb-$MONGODB_VERESION.tar.gz
 
 VOLUME /mongodb
 
-CMD cp -nv /opt/mongodb-2.6.9.tar.gz /mongodb
+CMD cp -nv /opt/mongodb-$MONGODB_VERESION.tar.gz /mongodb

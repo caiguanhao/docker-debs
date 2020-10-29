@@ -6,62 +6,42 @@ gitrepos:
 postgresql:
   build: postgresql
   volumes:
-    - './build/postgresql/ubuntu/16.04:/mnt'
+    - './build/postgresql/ubuntu/20.04:/mnt'
 
 redis:
   build: redis
   volumes:
-    - './build/redis/ubuntu/16.04:/redis'
+    - './build/redis/ubuntu/20.04:/redis'
 
 ruby:
   build: ruby
   volumes:
-    - './build/ruby/ubuntu/16.04:/ruby'
+    - './build/ruby/ubuntu/20.04:/ruby'
 
 nginx:
   build: nginx
   volumes:
-    - './build/nginx/ubuntu/16.04:/nginx'
-
-nginx-trusty:
-  build: nginx-trusty
-  volumes:
-    - './build/nginx/ubuntu/14.04:/nginx'
+    - './build/nginx/ubuntu/20.04:/nginx'
 
 memcached:
   build: memcached
   volumes:
-    - './build/memcached/ubuntu/16.04:/memcached'
+    - './build/memcached/ubuntu/20.04:/memcached'
 
 monit:
   build: monit
   volumes:
-    - './build/monit/ubuntu/16.04:/monit'
+    - './build/monit/ubuntu/20.04:/monit'
 
 docker:
   build: docker
   volumes:
-    - './build/docker/ubuntu/16.04:/docker'
-
-wkhtmltox:
-  build: wkhtmltox
-  volumes:
-    - './build/wkhtmltox/ubuntu/16.04:/wkhtmltox'
-
-varnish:
-  build: varnish
-  volumes:
-    - './build/varnish/ubuntu/16.04:/varnish'
+    - './build/docker/ubuntu/20.04:/docker'
 
 mongodb:
   build: mongodb
   volumes:
-    - './build/mongodb/ubuntu/16.04:/mongodb'
-
-openjdk:
-  build: openjdk
-  volumes:
-    - './build/openjdk/ubuntu/16.04:/openjdk'
+    - './build/mongodb/ubuntu/20.04:/mongodb'
 
 compose:
   build: compose

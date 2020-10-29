@@ -1,19 +1,13 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
-WORKDIR /opt
+RUN apt-get update
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y dpkg-dev debhelper libssl-dev libpcre3-dev zlib1g-dev curl
+RUN apt-get -d -o Dir::Cache=/opt -o Dir::Cache::archives=redis-server \
+    install --no-install-recommends -y redis-server
 
-RUN curl -Ls https://github.com/lamby/pkg-redis/archive/debian/sid.tar.gz | tar xfvz -
-
-RUN apt-get install -y dh-systemd libjemalloc-dev tcl && apt-get download libjemalloc1
-
-RUN cd pkg-redis-debian-sid && DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -b
-
-RUN mkdir -p redis-3.2.8 && cp *.deb redis-3.2.8 && tar -cv redis-3.2.8 | gzip -n > redis-3.2.8.tar.gz
+RUN find /opt/redis-server/* -not -name '*.deb' -delete && \
+    cd /opt && tar -cv redis-server | gzip -n > redis-server-5.tar.gz
 
 VOLUME /redis
 
-CMD cp -nv /opt/redis-3.2.8.tar.gz /redis
+CMD cp -nv /opt/redis-server-5.tar.gz /redis
