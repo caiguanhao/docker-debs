@@ -45,8 +45,8 @@ RUN su -s /bin/bash deploy -c 'git clone https://github.com/sstephenson/ruby-bui
 
 RUN su -s /bin/bash deploy -c 'export PATH="$HOME/.rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
-    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.4.10 && \
-    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.4.10.tar.gz 2.4.10'
+    CONFIGURE_OPTS="--disable-install-doc" rbenv install -f -v 2.6.4 && \
+    cd ~/.rbenv/versions && tar cfvz ~/ruby-2.6.4.tar.gz 2.6.4'
 
 VOLUME /ruby
 
